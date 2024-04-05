@@ -10,7 +10,7 @@ export default function Hero() {
         Unleash your <span className="text-blue-600">creativity</span> with our
           <span  className="italic text-transparent" style={{ WebkitTextStrokeWidth: '2px', WebkitTextStrokeColor: 'black'}}> story writing platform.</span>
         </h2>
-        <span class="h-10 w-48  px-8 py-2 text-indigo-700 transition-colors duration-150 border-2 bg-green-50 border-indigo-500 rounded-full focus:shadow-outline hover:bg-indigo-500 hover:text-indigo-100 cursor-pointer mt-10">
+        <span className="h-10 w-48  px-8 py-2 text-indigo-700 transition-colors duration-150 border-2 bg-green-50 border-indigo-500 rounded-full focus:shadow-outline hover:bg-indigo-500 hover:text-indigo-100 cursor-pointer mt-10">
           <p className="tracking-wider font-medium" >GET STARTED</p>
         </span>
 
