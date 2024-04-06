@@ -1,7 +1,7 @@
 import openai from "../../utils/openai";
 
-export default async function generateStory(topic, genre) {
-    const prompt = `Write a 50 words ${genre.toLowerCase()} story about ${topic}.`;
+export default async function storyGenerator(topic, genre) {
+    const prompt = `Write a 100 words ${genre.toLowerCase()} story about ${topic}.`;
 
     const chatCompletion = await openai.chat.completions.create({
         messages: [{ 
