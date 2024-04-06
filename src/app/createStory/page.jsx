@@ -11,10 +11,22 @@ export default function CreateStory() {
   const [originalResponse, setOriginalResponse] = useState('');
   const [rewrittenResponse, setRewrittenResponse] = useState(''); 
   const [showRewritten, setShowRewritten] = useState(false);
-  const [showButton, setShowButton] = useState(false); // Add state to control the visibility of the button
+  const [showButton, setShowButton] = useState(false); 
+
+  const topics = [
+    { name: 'Sad', genre: 'Sad' },
+    { name: 'Scary', genre: 'Scary' },
+    { name: 'Serious', genre: 'Serious' },
+    { name: 'Adventurous', genre: 'Adventurous' },
+    { name: 'Nothing', genre: 'Nothing' }
+  ];
+
+  const handleTopicSelection = (selectedGenre) => {
+    setGenre(selectedGenre);
+    setIsDropdownOpen(false);
+  };
 
   const handleGenerateStory = async () => {
-    // Check if topic and genre are provided
     if (!topic.trim()) {
       setError('Please provide a topic.');
       return;
@@ -32,18 +44,22 @@ export default function CreateStory() {
       }
   
       setOriginalResponse('');
-      // Render response like typewriter effect
       for (let i = 0; i < generatedResponse.length; i++) {
         setTimeout(() => {
           setOriginalResponse((prevResponse) => prevResponse + generatedResponse[i]);
-        }, 50 * i);
+        }, 15 * i);
       }
 
-      console.log('Original Response', generatedResponse);
+      setShowButton(true);
+           
+    } catch (error) {
+      setError('An error occurred while generating the response.');
+      console.error(error);
+    }
+  };  
 
-      setShowButton(true); // Show the button after the typewriter effect finishes
-
-      const rewrittenResponse = await storyRewriter(generatedResponse);
+  const handleRewritingStory = async () => {
+    const rewrittenResponse = await storyRewriter(originalResponse);
       if (!rewrittenResponse) {
         setError('Failed to rewrite the story.');
         return;
@@ -53,17 +69,11 @@ export default function CreateStory() {
       for (let i = 0; i < rewrittenResponse.length; i++) {
         setTimeout(() => {
           setRewrittenResponse((prevResponse) => prevResponse + rewrittenResponse[i]);
-        }, 50 * i);
-      }      
-    } catch (error) {
-      setError('An error occurred while generating the response.');
-      console.error(error);
-    }
-  };  
+        }, 15 * i);
+      } 
 
-  const handleShowRewritten = () => {
     setShowRewritten(true);
-  };
+  }
 
   const handleTopicChange = (e) => {
     setError('');
@@ -119,52 +129,18 @@ export default function CreateStory() {
                 isDropdownOpen ? 'block' : 'hidden'
               } z-10 absolute bg-transparent divide-y divide-gray-100 rounded-lg w-72 px-auto dark:bg-gray-700`}
             >
-              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 flex flex-wrap justify-center px-5 w-full">
-                <li className="text-center border border-white rounded-3xl text-white m-1">
-                  <a
-                    href="#"
-                    className="block px-4 py-1 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white"
-                    onClick={() => { setGenre('Sad'); setIsDropdownOpen(false); }}
-                  >
-                    Sad
-                  </a>
-                </li>
-                <li className="text-center border border-white rounded-3xl text-white m-1">
-                  <a
-                    href="#"
-                    className="block px-4 py-1 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white"
-                    onClick={() => { setGenre('Scary'); setIsDropdownOpen(false); }}
-                  >
-                    Scary
-                  </a>
-                </li>
-                <li className="text-center border border-white rounded-3xl text-white m-1">
-                  <a
-                    href="#"
-                    className="block px-4 py-1 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white"
-                    onClick={() => { setGenre('Serious'); setIsDropdownOpen(false); }}
-                  >
-                    Serious
-                  </a>
-                </li>
-                <li className="text-center border border-white rounded-3xl text-white m-1">
-                  <a
-                    href="#"
-                    className="block px-4 py-1 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white"
-                    onClick={() => { setGenre('Adventurous'); setIsDropdownOpen(false); }}
-                  >
-                    Adventurous
-                  </a>
-                </li>
-                <li className="text-center border border-white rounded-2xl text-white m-1">
-                  <a
-                    href="#"
-                    className="block px-4 py-1 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white"
-                    onClick={() => { setGenre('No'); setIsDropdownOpen(false); }}
-                  >
-                    Nothing
-                  </a>
-                </li>
+               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 flex flex-wrap justify-center px-5 w-full">
+                {topics.map((topic, index) => (
+                  <li key={index} className="text-center border border-white rounded-3xl text-white m-1">
+                    <a
+                      href="#"
+                      className="block px-4 py-1 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-600 dark:hover:text-white"
+                      onClick={() => handleTopicSelection(topic.genre)}
+                    >
+                      {topic.name}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </section>
@@ -177,17 +153,17 @@ export default function CreateStory() {
         <section className={`flex flex-col min-h-96 max-h-96 p-6 h w-96 mx-2 my-3 rounded-2xl shadow-lg bg-black text-white relative ${originalResponse ? '' : 'hidden'}`}>
           <h2 className='text-center text-lg '>Original Story</h2>
           <br />
-          <p  className='text-justify text-base mx-3 overflow-auto' >{originalResponse}</p>
+          <p  className='text-justify text-sm lg:text-base mx-3 overflow-auto' >{originalResponse}</p>
           {showButton && ( 
-          <button onClick={handleShowRewritten} className="bg-indigo-600 text-indigo-50 px-4 py-2 rounded-md mt-2 mx-3 tracking-widest text-sm lg:text-base">
+          <button onClick={handleRewritingStory} className="bg-indigo-600 text-indigo-50 px-4 py-2 rounded-md mt-2 mx-3 tracking-widest text-sm lg:text-base">
             Make it Funny!
           </button>
         )}
         </section>
         <section className={`flex flex-col min-h-96 max-h-96 p-9 h w-96 mx-2 my-3 rounded-2xl shadow-lg bg-black tracking-wider text-slate-200  ${showRewritten ? '' : 'hidden'}`}>
-          <h2 className='text-center text-lg '>Rewritten Story</h2>
+          <h2 className='text-center text-lg '>Funny Version</h2>
           <br />
-          {showRewritten && <p className='text-justify text-base overflow-auto'>{rewrittenResponse}</p>}
+          {showRewritten && <p className='text-justify text-sm lg:text-base overflow-auto'>{rewrittenResponse}</p>}
         </section>
       </div>
     </main>
