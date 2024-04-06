@@ -71,7 +71,7 @@ export default function CreateStory() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center pt-20 px-12 bg-gradient-to-b from-indigo-200 via-indigo-400 to-indigo-900">
+    <main id="createStory" className="flex min-h-screen flex-col items-center pt-20 px-12 bg-gradient-to-b from-indigo-200 via-indigo-400 to-indigo-900">
       <h4 className="text-2xl font-semibold text-blue-950 tracking-wide text-justify pb-12 px-3">
           Craft tales in seconds! Choose topic, style, and enjoy AI magic.
       </h4>
@@ -180,7 +180,7 @@ export default function CreateStory() {
           <p  className='text-justify text-base mx-3 overflow-auto' >{originalResponse}</p>
           {showButton && ( 
           <button onClick={handleShowRewritten} className="bg-indigo-600 text-indigo-50 px-4 py-2 rounded-md mt-2 mx-3 tracking-widest">
-            Show Rewritten Story
+            Make it Funny!
           </button>
         )}
         </section>
