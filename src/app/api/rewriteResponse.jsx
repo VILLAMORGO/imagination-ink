@@ -1,9 +1,9 @@
 import openai from "../../utils/openai";
 
 export default async function storyRewriter(generatedResponse) {
-    const topic = generatedResponse; // Assigning the response to the topic
-    const genre = "funny"; // Assuming a default genre
-    const prompt = `Can you rewrite this story ${topic} with a ${genre.toLowerCase()} genre?`;
+    const topic = generatedResponse; 
+    const genre = "funny"; 
+    const prompt = `Inject a dose of humor into this narrative: ${topic}, transforming it into a ${genre.toLowerCase()} masterpiece!`;
 
     const chatCompletion = await openai.chat.completions.create({
         messages: [{ 
